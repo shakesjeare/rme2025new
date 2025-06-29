@@ -1,0 +1,17 @@
+{
+  "name": "vr-audio-recorder",
+  "version": "1.0.0",
+  "description": "VR Audio Recorder with Email Sending",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "multer": "^1.4.2",
+    "nodemailer": "^6.6.0"
+  },
+  "engines": {
+    "node": "16.x"
+  }
+}

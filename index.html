@@ -1,0 +1,2023 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Story Island</title>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-play-sound-on-event@1.0.2/dist/aframe-play-sound-on-event.min.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="ui.js" defer></script>
+
+  </head>
+  
+  <div id="start-ui" class="start-ui">
+    <h1 class="title">REMEMBER ME</h1>
+    <p class="description">
+      A VR Journey for Mindful Commemoration and Meditation.
+    </p>
+    <p class="warning">
+      Some stories in the experience may trigger sadness.<br />
+      If you recently lost someone, skip parts that may upset you.
+    </p>
+
+    <div class="language-buttons">
+      <button onclick="startExperience('Start Journey')">Start Journey</button>
+    </div>
+  </div>
+
+  <body>
+    <!-- 在你的HTML文件的body标签内添加这个div -->
+    
+    
+    <a-scene
+      id="vr-scene"
+      style="display: none"
+      cursor="rayOrigin: mouse"
+      physics
+      loading-screen="dotsColor: white; backgroundColor: black;"
+    >
+      <script>
+        // 等待 A-Frame 场景加载完成
+        document
+          .querySelector("a-scene")
+          .addEventListener("loaded", function () {
+            const button = document.querySelector("#inspectorButton");
+            button.addEventListener("click", function () {
+              if (AFRAME && AFRAME.INSPECTOR) {
+                AFRAME.INSPECTOR.open();
+              }
+            });
+          });
+      </script>
+
+      <a-assets>
+        <a-asset-item
+          id="lefthand"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/leftHandHigh.glb"
+        ></a-asset-item>
+
+        <a-asset-item
+          id="righthand"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/rightHandHigh.glb"
+        ></a-asset-item>
+
+        <a-asset-item
+          id="iisland"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/nightjapan.glb"
+        ></a-asset-item>
+
+        <a-asset-item
+          id="sky"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/newnewsky.glb"
+        ></a-asset-item>
+
+        <a-asset-item
+          id="candlelight"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+        ></a-asset-item>
+
+        <a-asset-item
+          id="candle"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521nolight.glb"
+        ></a-asset-item>
+
+        <a-asset-item
+          id="yellow"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/whiltecandle.glb"
+        ></a-asset-item>
+
+        <a-asset-item
+          id="grey"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/reddd.glb"
+        ></a-asset-item>
+
+        <a-asset-item
+          id="red"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/reye.glb"
+        ></a-asset-item>
+
+        <audio
+          id="breathguide"
+          src="https://cdn.glitch.global/54cab4c0-7e2c-4173-9ff1-517d0752fccb/0217newmeditation.mp3"
+        ></audio>
+        
+        
+        <audio id="candle-instructions-sound" src="https://cdn.glitch.global/54cab4c0-7e2c-4173-9ff1-517d0752fccb/gai.mp3" preload="auto"></audio>
+
+        <audio
+          id="c1"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/c%20cantonese.mp3"
+        ></audio>
+
+        <audio
+          id="d1"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/d1.mp3"
+        ></audio>
+
+        <audio
+          id="caca"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/caca1.mp3"
+        ></audio>
+
+        <audio
+          id="ho"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/ho.mp3"
+        ></audio>
+
+        <audio
+          id="612"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/612.mp3"
+        ></audio>
+
+        <audio
+          id="wongmiss"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/wongmiss.mp3"
+        ></audio>
+
+        <audio
+          id="griefdad"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/dadgrief.mp3"
+        ></audio>
+
+        <audio
+          id="griefenglish"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/englishgirl_1.mp3"
+        ></audio>
+        
+           <audio
+          id="griefenglish2025"
+          src="https://cdn.glitch.global/54cab4c0-7e2c-4173-9ff1-517d0752fccb/FjjqXsrq7Qs.mp3"
+        ></audio>
+
+
+        <audio
+          id="wongtongxue"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/wongtongxue.mp3"
+        ></audio>
+
+        <audio
+          id="bg"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/Serge%20Quadrado%20-%20Tears%20of%20Princess.mp3"
+        ></audio>
+
+        <audio
+          id="gua"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/guaa.mp3"
+        ></audio>
+
+        <audio
+          id="siv"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/siv.mp3"
+        ></audio>
+
+        <audio
+          id="leo"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/leo1.mp3"
+        ></audio>
+
+        <audio
+          id="cpu"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/cpu.mp3"
+        ></audio>
+
+        <audio
+          id="yuqi"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/yuqi1.mp3"
+        ></audio>
+
+        <audio
+          id="caisonglin"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/Caisonglin.mp3"
+        ></audio>
+
+        <audio
+          id="begininggrief"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/begining.mp3"
+        ></audio>
+
+        <audio
+          id="cantonaudio1"
+          src="https://cdn.glitch.global/c1c0df0e-61a7-404f-a219-3a71bf1341e1/else1.mp3"
+        ></audio>
+
+        <audio
+          id="englishaudio1"
+          src="https://cdn.glitch.global/c1c0df0e-61a7-404f-a219-3a71bf1341e1/english1.mp3"
+        ></audio>
+
+        <audio
+          id="chineseaudio1"
+          src="https://cdn.glitch.global/c1c0df0e-61a7-404f-a219-3a71bf1341e1/yoyo1.mp3"
+        ></audio>
+        
+        <audio
+    id="welcome"
+    src="https://cdn.glitch.global/54cab4c0-7e2c-4173-9ff1-517d0752fccb/storyisland%20welcome.mp3"
+    preload="auto"
+  ></audio>
+  
+  <audio
+    id="guidesound1"
+    src="https://cdn.glitch.global/54cab4c0-7e2c-4173-9ff1-517d0752fccb/send%20it%20to%20sky.mp3"
+    preload="auto"
+  ></audio>
+  
+  <audio
+    id="guidesound2"
+    src="https://cdn.glitch.global/54cab4c0-7e2c-4173-9ff1-517d0752fccb/last.mp3"
+    preload="auto"
+  ></audio>
+        
+
+        <a-assets>
+          <img
+            id="textbg-img"
+            src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/bggg.png"
+          />
+          <img
+            id="text1-img"
+            src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/text1.png"
+          />
+          <img
+            id="text2-img"
+            src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/text2.png"
+          />
+
+          <img
+            id="relax-img"
+            src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/relax.png"
+          />
+        </a-assets>
+
+        <a-asset-item
+          id="firefire"
+          src=" https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/fireee.glb"
+        ></a-asset-item>
+
+        <a-asset-item
+          id="breathball"
+          src="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/magicbreathball.glb"
+        ></a-asset-item>
+
+        <!-- Your scene content -->
+      </a-assets>
+      
+      <a-entity id="original-environment" visible="true">
+
+      <a-sound id="cantonaudio" sound="src: "></a-sound>
+
+      <a-sound
+        id="chineseaudio"
+        sound="src: ; on: click; autoplay: false;"
+      ></a-sound>
+
+      <a-sound
+        id="englishaudio"
+        sound="src: ; on: click; autoplay: false;"
+      ></a-sound>
+
+     <a-entity id="fire" gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/fireee.glb" scale="1.7 1.7 1.7" position="1 -0.032 -2.5" animation-mixer="" visible="false" light="type: spot"></a-entity>
+<a-sphere id="firetrigger" scale="0.6 0.6 0.6" position="0.15 -0.032 -0.8" visible="false"></a-sphere>
+        
+      <a-image
+        id="touchfire"
+        src="#relax-img"
+        scale="3 3 3"
+        position="0.5 0.79308 -1.5"
+        visible="false"
+        rotation="0 -1 0"
+        material=""
+        geometry=""
+      >
+      </a-image>
+
+      <a-entity
+        id="breath"
+        gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/magicbreath.glb"
+        animation-mixer="timeScale: 0.3"
+        visible="false"
+        scale="0.15 0.15 0.15"
+        position="1.14597 -4.34847 -1.8"
+        opacity=""
+      >
+        <a-entity id="guide" sound="src:#breathguide; volume: 4"></a-entity>
+      </a-entity>
+
+      <a-entity
+        position="0 1.45 -0.77"
+        scale="1.05 1.05 1.05"
+        rotation="8 0 0"
+        id="uiContainer"
+      >
+        <!-- Transparent Black Rounded-Corner Plane -->
+
+        <a-image
+          id="textbg"
+          src="#textbg-img"
+          width="1.1"
+          height="0.9"
+          radius="0.1"
+          position="0 -0.01 -0.02"
+        ></a-image>
+
+        <a-image id="text1" src="#text1-img" material="" geometry=""></a-image>
+
+        <a-image id="text2" src="#text2-img" material="" geometry=""></a-image>
+        <a-entity
+          id="yellowcandle"
+          gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/whiltecandle.glb"
+          scale="0.25 0.25 0.25"
+          position="0 -0.303 0"
+          opacity="0"
+        >
+          <a-entity
+            id="fire-canton"
+            gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+            scale="0.6 0.6 0.6"
+            position="0.0083 0.36746 0.02205"
+            animation-mixer=""
+            visible="false"
+          ></a-entity>
+
+          <a-sphere
+            id="canton"
+            postion="0 0 0"
+            scale="0.15 0.15 0.15"
+            material=""
+            geometry=""
+            position="0.02914 0.81477 0.01721"
+            opacity="0"
+          ></a-sphere>
+        </a-entity>
+
+        <a-entity
+          id="greycandle"
+          gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/reddd.glb"
+          scale="0.25 0.25 0.25"
+          position="0.25 -0.303 0"
+          opacity="0"
+        >
+          <a-entity
+            id="fire-english"
+            gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+            scale="0.6 0.6 0.6"
+            position="0.0083 0.36746 0.02205"
+            animation-mixer=""
+            visible="false"
+          ></a-entity>
+          <a-sphere
+            hoverable
+            grabbable
+            id="english"
+            postion="0 0 0"
+            scale="0.15 0.15 0.15"
+            material=""
+            geometry=""
+            position="0.02914 0.81477 0.01721"
+            opacity="0"
+          ></a-sphere>
+        </a-entity>
+
+        <a-entity
+          id="redcandle"
+          gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/reye.glb"
+          scale="0.25 0.25 0.25"
+          position="-0.26 -0.303 0"
+          opacity="0"
+        >
+          <a-entity
+            id="fire-chinese"
+            gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+            scale="0.6 0.6 0.6"
+            position="0.0083 0.36746 0.02205"
+            animation-mixer=""
+            visible="false"
+          ></a-entity>
+
+          <a-sphere
+            hoverable
+            grabbable
+            id="Chinese"
+            postion="0 0 0"
+            scale="0.15 0.15 0.15"
+            material=""
+            geometry=""
+            position="0.02914 0.81477 0.01721"
+            opacity="0"
+          ></a-sphere>
+        </a-entity>
+      </a-entity>
+        
+        <a-entity id="final-guide" 
+    sound="src: https://cdn.glitch.global/54cab4c0-7e2c-4173-9ff1-517d0752fccb/last2.mp3; 
+    positional: false;
+    volume: 1;
+    autoplay: false">
+</a-entity>
+
+      <a-entity
+        id="island"
+        gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/nightjapan.glb"
+        position="-2 0 1.8"
+        scale="0.004 0.004 0.004"
+        rotation="0 10 0"
+        animation-mixer="timeScale: 0.5"
+        sound="src: #bg; autoplay: true; loop: true; volume: 0.1"
+      >
+      </a-entity>
+
+      <a-entity>
+        <a-camera> </a-camera>
+        <a-entity
+          id="superhandleft"
+          sphere-collider="objects: a-sphere"
+          super-hands
+          hand-controls="hand: left; handModelStyle: highPoly;"
+          scale="0.05 0.05 0.05"
+          rotation="60 0 0"
+        ></a-entity>
+
+        <a-entity
+          id="superhandright"
+          sphere-collider="objects: a-sphere"
+          super-hands
+          scale="0.05 0.05 0.05"
+          hand-controls="hand: right; handModelStyle: highPoly; "
+        >
+        </a-entity>
+      </a-entity>
+
+      <a-entity
+        id="magic"
+        class="exit-parent"
+        gltf-model=""
+        position="-0.987 1.3 0.675"
+        light="type: ambient; intensity: 0.8"
+        scale="0.01 0.01 0.01"
+        rotation="0 69.95 0"
+        animation-mixer="timeScale: 0.5"
+      >
+        <a-sphere
+          hoverable
+          grabbable
+          id="exit"
+          position="0 25 0"
+          radius="8"
+          opacity="0"
+          material=""
+          geometry=""
+          event-set__mouseenter="scale: 1.1 1.1 1.1; _event: mouseenter"
+          event-set__mouseleave="scale: 1 1 1; _event: mouseleave"
+          navigate-on-hover-grab="url: https://zcyemi.github.io/webxr_test/index.html"
+        ></a-sphere>
+        <a-text
+          value=""
+          position="0 55 0"
+          rotation="0 69.95 0"
+          align="center"
+          width="90"
+        >
+        </a-text>
+      </a-entity>
+
+      <a-entity id="cantonese1">
+        <a-entity
+          id="pivot-point-1"
+          animation__lift="property: position; from: 0 -0.6 -0.5; to: 0 0 0 ; dur: 15000; easing: easeInOutSine"
+          animation__rise="property: position; to: 20 20 -0.5; dur: 50000; easing: easeInOutCubic; startEvents: rise"
+        >
+          <a-entity class="ball-parent">
+            <a-sphere
+              id="ball1"
+              hoverable
+              grabbable
+              draggable
+              droppable
+              position="0 0 0"
+              radius="0.08"
+              color="#fab51e"
+              sound="src: #c1"
+              light="type: point; intensity: 0"
+              opacity="0"
+            >
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/whiltecandle.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+              ></a-entity>
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+                visible="false"
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/particle.glb"
+                scale="0.1 0.1 0.1"
+                position="0 0.05 0"
+                animation-mixer=""
+                visible="false"
+              >
+                <a-animation
+                  attribute="opacity"
+                  from="0"
+                  to="1"
+                  dur="1000"
+                  direction="alternate"
+                  repeat="indefinite"
+                ></a-animation>
+              </a-entity>
+            </a-sphere>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity id="cantonese2">
+        <a-entity
+          id="pivot-point-2"
+          animation__lift="property: position; from: 0 -0.6 0; to: 0 0 0 ; dur: 15000; easing: easeInOutSine"
+          animation__rise="property: position; to: 15 20 -0.5; dur: 50000; easing: easeInOutSine; startEvents: rise"
+        >
+          <a-entity class="ball-parent">
+            <a-sphere
+              hoverable
+              grabbable
+              draggable
+              droppable
+              id="ball2"
+              position="0 0 0"
+              radius="0.08"
+              color="#fab51e"
+              sound="src: #d1"
+              light="type: point; intensity: 0"
+              opacity="0"
+            >
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/whiltecandle.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+              >
+              </a-entity>
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+                visible="false"
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/particle.glb"
+                scale="0.1 0.1 0.1"
+                position="0 0.05 0"
+                animation-mixer=""
+                visible="false"
+              >
+                <a-animation
+                  attribute="opacity"
+                  from="0"
+                  to="1"
+                  dur="1000"
+                  direction="alternate"
+                  repeat="indefinite"
+                ></a-animation>
+              </a-entity>
+            </a-sphere>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity id="cantonese3">
+        <a-entity
+          id="pivot-point-3"
+          animation__lift="property: position; from: 0 -0.6 0; to: 0 0 0 ; dur: 15000; easing: easeInOutSine"
+          animation__rise="property: position; to: 10 20 -0.5; dur: 50000; easing: easeInOutSine; startEvents: rise"
+        >
+          <a-entity class="ball-parent">
+            <a-sphere
+              id="ball3"
+              hoverable
+              grabbable
+              draggable
+              droppable
+              position="0 0 0"
+              radius="0.08"
+              color="#fab51e"
+              sound="src: #caca"
+              light="type: point; intensity: 0"
+              opacity="0"
+            >
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/whiltecandle.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+                visible="false"
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/particle.glb"
+                scale="0.1 0.1 0.1"
+                position="0 0.05 0"
+                animation-mixer=""
+                visible="false"
+              >
+                <a-animation
+                  attribute="opacity"
+                  from="0"
+                  to="1"
+                  dur="1000"
+                  direction="alternate"
+                  repeat="indefinite"
+                ></a-animation>
+              </a-entity>
+            </a-sphere>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity id="cantonese4">
+        <a-entity
+          id="pivot-point-4"
+          animation__lift="property: position; from: 0 -0.6 0.5; to: 0 0 0 ; dur: 15000; easing: easeInOutSine"
+          animation__rise="property: position; to: 25 20 -0.5; dur: 50000; easing: easeInOutSine; startEvents: rise"
+        >
+          <a-entity class="ball-parent">
+            <a-sphere
+              id="ball4"
+              hoverable
+              grabbable
+              draggable
+              droppable
+              position="0 0 0"
+              radius="0.08"
+              color="#fab51e"
+              sound="src: #ho "
+              light="type: point; intensity: 0"
+              opacity="0"
+            >
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/whiltecandle.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+                visible="false"
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/particle.glb"
+                scale="0.1 0.1 0.1"
+                position="0 0.05 0"
+                animation-mixer=""
+                visible="false"
+              >
+                <a-animation
+                  attribute="opacity"
+                  from="0"
+                  to="1"
+                  dur="1000"
+                  direction="alternate"
+                  repeat="indefinite"
+                ></a-animation>
+              </a-entity>
+            </a-sphere>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity id="cantonese5">
+        <a-entity
+          id="pivot-point-5"
+          animation__lift="property: position; from: 0 -0.6 0; to: 0 0 0 ; dur: 15000; easing: easeInOutSine"
+          animation__rise="property: position; to: 18 15 -0.3; dur: 50000; easing: easeInOutSine; startEvents: rise"
+        >
+          <a-entity class="ball-parent">
+            <a-sphere
+              id="ball5"
+              hoverable
+              grabbable
+              draggable
+              droppable
+              position="0 0 0"
+              radius="0.08"
+              color="#fab51e"
+              sound="src: #612"
+              light="type: point; intensity: 0"
+              opacity="0"
+            >
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/whiltecandle.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+                visible="false"
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/particle.glb"
+                scale="0.1 0.1 0.1"
+                position="0 0.05 0"
+                animation-mixer=""
+                visible="false"
+              >
+                <a-animation
+                  attribute="opacity"
+                  from="0"
+                  to="1"
+                  dur="1000"
+                  direction="alternate"
+                  repeat="indefinite"
+                ></a-animation>
+              </a-entity>
+            </a-sphere>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity id="cantonese6">
+        <a-entity
+          id="pivot-point-6"
+          animation__lift="property: position; from: 0 -0.6 0; to: 0 0 0 ; dur: 15000; easing: easeInOutSine"
+          animation__rise="property: position; to: 6 15 -0.3; dur: 50000; easing: easeInOutSine; startEvents: rise"
+        >
+          <a-entity class="ball-parent">
+            <a-sphere
+              id="ball6"
+              hoverable
+              grabbable
+              draggable
+              droppable
+              position="0 0 0"
+              radius="0.08"
+              color="#fab51e"
+              sound="src: #wongtongxue"
+              light="type: point; intensity: 0"
+              opacity="0"
+            >
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/whiltecandle.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+                visible="false"
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/particle.glb"
+                scale="0.1 0.1 0.1"
+                position="0 0.05 0"
+                animation-mixer=""
+                visible="false"
+              >
+                <a-animation
+                  attribute="opacity"
+                  from="0"
+                  to="1"
+                  dur="1000"
+                  direction="alternate"
+                  repeat="indefinite"
+                ></a-animation>
+              </a-entity>
+            </a-sphere>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity id="cantonese7">
+        <a-entity
+          id="pivot-point-7"
+          animation__lift="property: position; from: 0 -0.6 0; to: 0 0 0 ; dur: 15000; easing: easeInOutSine"
+          animation__rise="property: position; to: 12 20 -0.3; dur: 50000; easing: easeInOutSine; startEvents: rise"
+        >
+          <a-entity class="ball-parent">
+            <a-sphere
+              id="ball7"
+              hoverable
+              grabbable
+              draggable
+              droppable
+              position="0 0 0"
+              radius="0.08"
+              color="#fab51e"
+              sound="src: #caisonglin"
+              light="type: point; intensity: 0"
+              opacity="0"
+            >
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/whiltecandle.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+                visible="false"
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/particle.glb"
+                scale="0.1 0.1 0.1"
+                position="0 0.05 0"
+                animation-mixer=""
+                visible="false"
+              >
+                <a-animation
+                  attribute="opacity"
+                  from="0"
+                  to="1"
+                  dur="1000"
+                  direction="alternate"
+                  repeat="indefinite"
+                ></a-animation>
+              </a-entity>
+            </a-sphere>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity id="cantonese8">
+        <a-entity
+          id="pivot-point-8"
+          animation__lift="property: position; from: 0 -0.6 0; to: 0 0 0 ; dur: 15000; easing: easeInOutSine"
+          animation__rise="property: position; to: 5 21 -0.5; dur: 50000; easing: easeInOutSine; startEvents: rise"
+        >
+          <a-entity class="ball-parent">
+            <a-sphere
+              id="ball8"
+              hoverable
+              grabbable
+              draggable
+              droppable
+              position="0 0 0"
+              radius="0.08"
+              color="#fab51e"
+              sound="src: #ho volume: 4"
+              light="type: point; intensity: 0"
+              opacity="0"
+            >
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/whiltecandle.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+                visible="false"
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/particle.glb"
+                scale="0.1 0.1 0.1"
+                position="0 0.05 0"
+                animation-mixer=""
+                visible="false"
+              >
+                <a-animation
+                  attribute="opacity"
+                  from="0"
+                  to="1"
+                  dur="1000"
+                  direction="alternate"
+                  repeat="indefinite"
+                ></a-animation>
+              </a-entity>
+            </a-sphere>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity id="chinese1">
+        <a-entity
+          id="pivot-point-9"
+          animation__lift="property: position; from: 0 -0.6 0; to: 0 0 0 ; dur: 15000; easing: easeInOutSine"
+          animation__rise="property: position; to: 5 23 -0.5; dur: 50000; easing: easeInOutSine; startEvents: rise"
+        >
+          <a-entity class="ball-parent">
+            <a-sphere
+              id="ball9"
+              hoverable
+              grabbable
+              draggable
+              droppable
+              position="0 0 0"
+              radius="0.08"
+              color="#fab51e"
+              sound="src: #gua"
+              light="type: point; intensity: 0"
+              opacity="0"
+            >
+              <a-entity
+                gltf-model="#red"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+                visible="false"
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/particle.glb"
+                scale="0.1 0.1 0.1"
+                position="0 0.05 0"
+                animation-mixer=""
+                visible="false"
+              >
+                <a-animation
+                  attribute="opacity"
+                  from="0"
+                  to="1"
+                  dur="1000"
+                  direction="alternate"
+                  repeat="indefinite"
+                ></a-animation>
+              </a-entity>
+            </a-sphere>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity id="chinese2">
+        <a-entity
+          id="pivot-point-11"
+          animation__lift="property: position; from: 0 -0.6 0; to: 0 0 0 ; dur: 15000; easing: easeInOutSine"
+          animation__rise="property: position; to: 5 23 -0.5; dur: 50000; easing: easeInOutSine; startEvents: rise"
+        >
+          <a-entity class="ball-parent">
+            <a-sphere
+              id="ball11"
+              hoverable
+              grabbable
+              draggable
+              droppable
+              position="0 0 0"
+              radius="0.08"
+              color="#fab51e"
+              sound="src: #siv"
+              light="type: point; intensity: 0"
+              opacity="0"
+            >
+              <a-entity
+                gltf-model="#red"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+                visible="false"
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/particle.glb"
+                scale="0.1 0.1 0.1"
+                position="0 0.05 0"
+                animation-mixer=""
+                visible="false"
+              >
+                <a-animation
+                  attribute="opacity"
+                  from="0"
+                  to="1"
+                  dur="1000"
+                  direction="alternate"
+                  repeat="indefinite"
+                ></a-animation>
+              </a-entity>
+            </a-sphere>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity id="chinese3">
+        <a-entity
+          id="pivot-point-12"
+          animation__lift="property: position; from: 0 -0.6 0; to: 0 0 0 ; dur: 15000; easing: easeInOutSine"
+          animation__rise="property: position; to: 5 20 -0.5; dur: 50000; easing: easeInOutSine; startEvents: rise"
+        >
+          <a-entity class="ball-parent">
+            <a-sphere
+              id="ball12"
+              hoverable
+              grabbable
+              draggable
+              droppable
+              position="0 0 0"
+              radius="0.08"
+              color="#fab51e"
+              sound="src: #leo"
+              light="type: point; intensity: 0"
+              opacity="0"
+            >
+              <a-entity
+                gltf-model="#red"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+                visible="false"
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/particle.glb"
+                scale="0.1 0.1 0.1"
+                position="0 0.05 0"
+                animation-mixer=""
+                visible="false"
+              >
+                <a-animation
+                  attribute="opacity"
+                  from="0"
+                  to="1"
+                  dur="1000"
+                  direction="alternate"
+                  repeat="indefinite"
+                ></a-animation>
+              </a-entity>
+            </a-sphere>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity id="chinese4">
+        <a-entity
+          id="pivot-point-13"
+          animation__lift="property: position; from: 0 -0.6 0; to: 0 0 0 ; dur: 15000; easing: easeInOutSine"
+          animation__rise="property: position; to: 5 24 -0.5; dur: 50000; easing: easeInOutSine; startEvents: rise"
+        >
+          <a-entity class="ball-parent">
+            <a-sphere
+              id="ball13"
+              hoverable
+              grabbable
+              draggable
+              droppable
+              position="0 0 0"
+              radius="0.08"
+              color="#fab51e"
+              sound="src: #cpu"
+              light="type: point; intensity: 0"
+              opacity="0"
+            >
+              <a-entity
+                gltf-model="#red"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+                visible="false"
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/particle.glb"
+                scale="0.1 0.1 0.1"
+                position="0 0.05 0"
+                animation-mixer=""
+                visible="false"
+              >
+                <a-animation
+                  attribute="opacity"
+                  from="0"
+                  to="1"
+                  dur="1000"
+                  direction="alternate"
+                  repeat="indefinite"
+                ></a-animation>
+              </a-entity>
+            </a-sphere>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity id="chinese5">
+        <a-entity
+          id="pivot-point-14"
+          animation__lift="property: position; from: 0 -0.6 0; to: 0 0 0 ; dur: 15000; easing: easeInOutSine"
+          animation__rise="property: position; to: 5 25 -0.5; dur: 50000; easing: easeInOutSine; startEvents: rise"
+        >
+          <a-entity class="ball-parent">
+            <a-sphere
+              id="ball14"
+              hoverable
+              grabbable
+              draggable
+              droppable
+              position="0 0 0"
+              radius="0.08"
+              color="#fab51e"
+              sound="src: #yuqi"
+              light="type: point; intensity: 0"
+              opacity="0"
+            >
+              <a-entity
+                gltf-model="#red"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+                visible="false"
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/particle.glb"
+                scale="0.1 0.1 0.1"
+                position="0 0.05 0"
+                animation-mixer=""
+                visible="false"
+              >
+                <a-animation
+                  attribute="opacity"
+                  from="0"
+                  to="1"
+                  dur="1000"
+                  direction="alternate"
+                  repeat="indefinite"
+                ></a-animation>
+              </a-entity>
+            </a-sphere>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity id="cantonese9">
+        <a-entity
+          id="pivot-point-15"
+          animation__lift="property: position; from: 0 -0.6 0; to: 0 0 0 ; dur: 15000; easing: easeInOutSine"
+          animation__rise="property: position; to: 5 26 -0.5; dur: 50000; easing: easeInOutSine; startEvents: rise"
+        >
+          <a-entity class="ball-parent">
+            <a-sphere
+              id="ball15"
+              hoverable
+              grabbable
+              draggable
+              droppable
+              position="0 0 0"
+              radius="0.08"
+              color="#fab51e"
+              sound="src: #wongmiss"
+              light="type: point; intensity: 0"
+              opacity="0"
+            >
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/whiltecandle.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+                visible="false"
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/particle.glb"
+                scale="0.1 0.1 0.1"
+                position="0 0.05 0"
+                animation-mixer=""
+                visible="false"
+              >
+                <a-animation
+                  attribute="opacity"
+                  from="0"
+                  to="1"
+                  dur="1000"
+                  direction="alternate"
+                  repeat="indefinite"
+                ></a-animation>
+              </a-entity>
+            </a-sphere>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity id="english1">
+        <a-entity
+          id="pivot-point-10"
+          animation__lift="property: position; from: 0 -0.6 0; to: 0 0 0 ; dur: 15000; easing: easeInOutSine"
+          animation__rise="property: position; to: 5 27 -0.5; dur: 50000; easing: easeInOutSine; startEvents: rise"
+        >
+          <a-entity class="ball-parent">
+            <a-sphere
+              id="ball10"
+              hoverable
+              grabbable
+              draggable
+              droppable
+              position="0 0 0"
+              radius="0.08"
+              color="#fab51e"
+              sound="src: #griefdad"
+              light="type: point; intensity: 0"
+              opacity="0"
+            >
+              <a-entity
+                gltf-model="#grey"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+                opacity="0"
+                transparent="false"
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+                visible="false"
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/particle.glb"
+                scale="0.1 0.1 0.1"
+                position="0 0.05 0"
+                animation-mixer=""
+                visible="false"
+              >
+                <a-animation
+                  attribute="opacity"
+                  from="0"
+                  to="1"
+                  dur="1000"
+                  direction="alternate"
+                  repeat="indefinite"
+                ></a-animation>
+              </a-entity>
+            </a-sphere>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity id="english2">
+        <a-entity
+          id="pivot-point-16"
+          animation__lift="property: position; from: 0 -0.6 0; to: 0 0 0 ; dur: 15000; easing: easeInOutSine"
+          animation__rise="property: position; to: 5 20 -0.5; dur: 50000; easing: easeInOutSine; startEvents: rise"
+        >
+          <a-entity class="ball-parent">
+            <a-sphere
+              id="ball16"
+              hoverable
+              grabbable
+              draggable
+              droppable
+              position="0 0 0"
+              radius="0.08"
+              color="#fab51e"
+              sound="src: #griefenglish"
+              light="type: point; intensity: 0"
+              opacity="0"
+            >
+              <a-entity
+                gltf-model="#grey"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+                opacity="0"
+                transparent="false"
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+                visible="false"
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/particle.glb"
+                scale="0.1 0.1 0.1"
+                position="0 0.05 0"
+                animation-mixer=""
+                visible="false"
+              >
+                <a-animation
+                  attribute="opacity"
+                  from="0"
+                  to="1"
+                  dur="1000"
+                  direction="alternate"
+                  repeat="indefinite"
+                ></a-animation>
+              </a-entity>
+            </a-sphere>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity id="english3">
+        <a-entity
+          id="pivot-point-17"
+          animation__lift="property: position; from: 0 -0.6 0; to: 0 0 0 ; dur: 15000; easing: easeInOutSine"
+          animation__rise="property: position; to: 5 30 -0.5; dur: 50000; easing: easeInOutSine; startEvents: rise"
+        >
+          <a-entity class="ball-parent">
+            <a-sphere
+              id="ball17"
+              hoverable
+              grabbable
+              draggable
+              droppable
+              position="0 0 0"
+              radius="0.08"
+              color="#fab51e"
+              sound="src: #begininggrief"
+              light="type: point; intensity: 0"
+              opacity="0"
+            >
+              <a-entity
+                gltf-model="#grey"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+                opacity="0"
+                transparent="false"
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+                visible="false"
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/particle.glb"
+                scale="0.1 0.1 0.1"
+                position="0 0.05 0"
+                animation-mixer=""
+                visible="false"
+              >
+                <a-animation
+                  attribute="opacity"
+                  from="0"
+                  to="1"
+                  dur="1000"
+                  direction="alternate"
+                  repeat="indefinite"
+                ></a-animation>
+              </a-entity>
+            </a-sphere>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+      
+         <a-entity id="english4">
+        <a-entity
+          id="pivot-point-18"
+          animation__lift="property: position; from: 0 -0.6 0; to: 0 0 0 ; dur: 15000; easing: easeInOutSine"
+          animation__rise="property: position; to: 5 30 -0.5; dur: 50000; easing: easeInOutSine; startEvents: rise"
+        >
+          <a-entity class="ball-parent">
+            <a-sphere
+              id="ball18"
+              hoverable
+              grabbable
+              draggable
+              droppable
+              position="0 0 0"
+              radius="0.08"
+              color="#fab51e"
+              sound="src: #griefenglish2025"
+              light="type: point; intensity: 0"
+              opacity="0"
+            >
+              <a-entity
+                gltf-model="#grey"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+                opacity="0"
+                transparent="false"
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+                scale="0.35 0.35 0.35"
+                position="0 -0.22 0"
+                animation-mixer=""
+                visible="false"
+              ></a-entity>
+
+              <a-entity
+                gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/particle.glb"
+                scale="0.1 0.1 0.1"
+                position="0 0.05 0"
+                animation-mixer=""
+                visible="false"
+              >
+                <a-animation
+                  attribute="opacity"
+                  from="0"
+                  to="1"
+                  dur="1000"
+                  direction="alternate"
+                  repeat="indefinite"
+                ></a-animation>
+              </a-entity>
+            </a-sphere>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+      
+
+      <a-entity 
+        id="candle-instructions" 
+        sound="src: #candle-instructions-sound; autoplay: false"  
+        > </a-entity>
+      
+        <a-entity position="0 1.6 -1">
+      <a-sound src="#welcome" autoplay="true" loop="false" position="0 0 0"></a-sound>
+    </a-entity>
+        
+      <!-- 个人蜡烛实体 -->
+      <a-entity id="personal-candle-system" visible="false" position="0 0 0" scale="1.3 1.3 1.3">
+  <!-- 主蜡烛实体 -->
+  <a-entity
+    id="personal-candle"
+    hoverable
+    grabbable
+    draggable
+    droppable
+  >
+    <!-- 蜡烛基座(sphere) - 永久隐藏 -->
+    <a-sphere
+      radius="0.06"
+      color="#fab51e"
+      light="type: point; intensity: 0.5"
+      position="0 0.07 0"
+      opacity="0.4"
+      visible="false"
+    ></a-sphere>
+
+    <!-- 蜡烛模型 - 始终可见 -->
+    <a-entity
+      id="candle-model"
+      gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/whiltecandle.glb"
+      scale="0.35 0.35 0.35"
+      position="0 -0.22 0"
+      animation-mixer=""
+    ></a-entity>
+
+    <!-- 火焰模型 - 初始隐藏，抓取时显示 -->
+    <a-entity
+      id="personal-candle-fire"
+      gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/521fire.glb"
+      scale="0.35 0.35 0.35"
+      position="0 -0.22 0"
+      animation-mixer=""
+      visible="false"
+    ></a-entity>
+
+    <!-- 粒子效果 - 初始隐藏，抓取时显示 -->
+    <a-entity
+      id="personal-candle-particle"
+      gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/particle.glb"
+      scale="0.1 0.1 0.1"
+      position="0 0.05 0"
+      animation-mixer=""
+      visible="false"
+    >
+      <!-- 闪烁动画 -->
+      <a-animation
+        attribute="opacity"
+        from="0"
+        to="1"
+        dur="1000"
+        direction="alternate"
+        repeat="indefinite"
+      ></a-animation>
+      
+    </a-entity>
+    
+     <a-text
+    id="recording-text"
+    value="Recording..."
+    position="0 0.2 0"
+    align="center"
+    color="red"
+    scale="0.15 0.15 0.15"
+    visible="false"
+    look-at="[camera]"
+    animation__fade="property: opacity; from: 0.3; to: 1; dur: 1000; dir: alternate; loop: true; easing: easeInOutSine"
+></a-text>
+    
+    <a-text
+    id="release-instruction-text"
+    value=""
+    position="0 0 0"
+    align="center"
+    color="white"
+    scale="0.1 0.1 0.1"
+    visible="false"
+    look-at="[camera]"
+    animation__fade="property: opacity; from: 0.3; to: 1; dur: 1000; dir: alternate; loop: true; easing: easeInOutSine"
+></a-text>
+    
+    
+  </a-entity>
+</a-entity>
+      
+
+
+      <a-plane
+        position="0 0 -4"
+        rotation="-90 0 0"
+        width="4"
+        height="0"
+        color="#7BC8A4"
+        material="color: #131513"
+        geometry=""
+        scale="100 100 100"
+      ></a-plane>
+
+      <a-entity
+        #id="sky"
+        gltf-model="https://cdn.glitch.global/e9b206da-54a7-4fd5-a508-c992ea1bd559/newnewsky.glb"
+        rotation="0 0 0"
+        animation="property: rotation; to: 0 100 0; dur: 200000"
+      ></a-entity>
+
+      <a-sky color="#ECECEC"></a-sky>
+        </a-entity>
+      
+    </a-scene>
+    
+
+    
+ 
+    
+     <!-- 录音状态显示 -->
+   <div id="recording-status" style="position: fixed; bottom: 20px; left: 20px; background: rgba(255, 0, 0, 0.2); padding: 10px; border-radius: 5px; color: white; display: none; z-index: 9999;">
+        录音中..
+        <div id="recording-timer">00:00</div>
+    </div>
+
+
+    <script src="main.js"></script>
+    <script src="fire.js"></script>
+    <script src="ballgenerate.js"></script>
+    
+    <script>
+// 创建调试界面 - 添加到HTML的<head>部分
+document.addEventListener('DOMContentLoaded', function() {
+  // 创建调试面板容器
+  const debugPanel = document.createElement('div');
+  debugPanel.id = 'debug-panel';
+  debugPanel.style.cssText = `
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: 12px;
+    z-index: 9999;
+    width: auto;
+    max-height: 400px;
+    overflow-y: auto;
+    user-select: none;
+  `;
+
+  // 创建标题
+  const title = document.createElement('div');
+  title.id = 'debug-title';
+  title.textContent = 'Loading...';
+  title.style.cssText = `
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+  `;
+  
+  // 创建最小化/展开功能
+  let isMinimized = true; // 默认折叠
+  const content = document.createElement('div');
+  content.id = 'debug-content';
+  content.style.display = 'none'; // 默认隐藏内容
+  
+  title.addEventListener('click', () => {
+    isMinimized = !isMinimized;
+    content.style.display = isMinimized ? 'none' : 'block';
+    debugPanel.style.width = isMinimized ? 'auto' : '300px';
+    
+    // 如果展开，更新状态显示
+    if (!isMinimized) {
+      updateStatus();
+    }
+  });
+  
+  // 创建状态显示区域
+  const statusSection = document.createElement('div');
+  statusSection.id = 'status-section';
+  
+  // 创建事件日志区域
+  const logSection = document.createElement('div');
+  logSection.id = 'log-section';
+  logSection.style.cssText = `
+    margin-top: 10px;
+    border-top: 1px solid #444;
+    padding-top: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+  `;
+  
+  // 创建按钮区域
+  const buttonSection = document.createElement('div');
+  buttonSection.style.cssText = `
+    margin-top: 10px;
+    border-top: 1px solid #444;
+    padding-top: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  `;
+  
+  // 添加调试按钮
+  const buttons = [
+    { 
+      text: 'Enable Fire', 
+      action: () => {
+        window.ballsGrabbed = 3;
+        window.isFireInteractionEnabled = true;
+        window.showAndEnableComponents();
+        addLog('Manually enabled Fire trigger');
+      } 
+    },
+    { 
+      text: 'Show Colliders', 
+      action: () => {
+        showCollisionAreas();
+        addLog('Showing all collision areas');
+      } 
+    },
+    { 
+      text: 'Rebind Events', 
+      action: () => {
+        rebindAllEvents();
+        addLog('Rebound all events');
+      } 
+    },
+    { 
+      text: 'Manual Trigger', 
+      action: () => {
+        triggerFireAction();
+        addLog('Manually triggered Fire action');
+      } 
+    },
+    { 
+      text: 'Clear Log', 
+      action: () => {
+        logSection.innerHTML = '';
+      }
+    }
+  ];
+  
+  buttons.forEach(btn => {
+    const button = document.createElement('button');
+    button.textContent = btn.text;
+    button.style.cssText = `
+      background-color: #333;
+      color: white;
+      border: 1px solid #555;
+      border-radius: 3px;
+      padding: 5px;
+      font-size: 11px;
+      cursor: pointer;
+    `;
+    button.addEventListener('click', btn.action);
+    buttonSection.appendChild(button);
+  });
+  
+  // 组装面板
+  debugPanel.appendChild(title);
+  content.appendChild(statusSection);
+  content.appendChild(logSection);
+  content.appendChild(buttonSection);
+  debugPanel.appendChild(content);
+  document.body.appendChild(debugPanel);
+  
+  // 设置状态更新定时器
+  updateLoadingStatus();
+  setInterval(updateLoadingStatus, 500); // 只更新标题的加载状态
+  
+  // 仅当展开时才更新详细状态
+  setInterval(() => {
+    if (!isMinimized) {
+      updateStatus();
+    }
+  }, 500);
+  
+  addLog('Debug panel initialized');
+  
+  // 辅助函数
+  // 更新最小化状态下的加载标题
+  function updateLoadingStatus() {
+    const scene = document.querySelector('a-scene');
+    
+    if (!scene) {
+      title.textContent = 'Scene Not Found';
+      title.style.color = 'red';
+      return;
+    }
+    
+    if (!scene.hasLoaded) {
+      title.textContent = 'Loading...';
+      title.style.color = 'orange';
+    } else {
+      // 场景加载完成
+      const vrMode = scene.is('vr-mode');
+      
+      if (vrMode) {
+        title.textContent = 'VR Active';
+        title.style.color = 'lightgreen';
+      } else {
+        title.textContent = 'Ready';
+        title.style.color = 'lightblue';
+      }
+      
+      // 检查Fire状态
+      const fireTrigger = document.querySelector('#firetrigger');
+      const fireEnabled = window.isFireInteractionEnabled;
+      
+      if (fireEnabled && fireTrigger && fireTrigger.getAttribute('visible')) {
+        title.textContent += ' | Fire: ON';
+      }
+    }
+  }
+  
+  // 更新展开状态下的详细信息
+  function updateStatus() {
+    const scene = document.querySelector('a-scene');
+    const fireTrigger = document.querySelector('#firetrigger');
+    
+    if (!scene || !scene.hasLoaded) {
+      statusSection.innerHTML = '<div style="color:orange">Scene not fully loaded</div>';
+      return;
+    }
+    
+    const statusHTML = `
+      <div><span style="color:#aaa">Scene loaded:</span> <span style="color:${scene.hasLoaded ? 'lightgreen' : 'red'}">${scene.hasLoaded ? 'Yes' : 'No'}</span></div>
+      <div><span style="color:#aaa">Balls count:</span> <span style="color:${window.ballsGrabbed >= 3 ? 'lightgreen' : 'orange'}">${window.ballsGrabbed || 0}/3</span></div>
+      <div><span style="color:#aaa">Fire interaction:</span> <span style="color:${window.isFireInteractionEnabled ? 'lightgreen' : 'red'}">${window.isFireInteractionEnabled ? 'Enabled' : 'Disabled'}</span></div>
+      <div><span style="color:#aaa">Fire visible:</span> <span style="color:${document.querySelector('#fire').getAttribute('visible') ? 'lightgreen' : 'red'}">${document.querySelector('#fire').getAttribute('visible') ? 'Yes' : 'No'}</span></div>
+      <div><span style="color:#aaa">Fire trigger visible:</span> <span style="color:${fireTrigger && fireTrigger.getAttribute('visible') ? 'lightgreen' : 'red'}">${fireTrigger && fireTrigger.getAttribute('visible') ? 'Yes' : 'No'}</span></div>
+      <div><span style="color:#aaa">Trigger position:</span> <span style="color:lightblue">${fireTrigger ? JSON.stringify(fireTrigger.getAttribute('position')) : 'N/A'}</span></div>
+      <div><span style="color:#aaa">Trigger scale:</span> <span style="color:lightblue">${fireTrigger ? JSON.stringify(fireTrigger.getAttribute('scale')) : 'N/A'}</span></div>
+      <div><span style="color:#aaa">VR mode:</span> <span>${scene.is('vr-mode') ? 'Yes' : 'No'}</span></div>
+      <div><span style="color:#aaa">Trigger events:</span> <span>${fireTrigger && fireTrigger._listeners ? JSON.stringify(Object.keys(fireTrigger._listeners)) : 'Unknown'}</span></div>
+    `;
+    
+    statusSection.innerHTML = statusHTML;
+  }
+  
+  function addLog(message) {
+    const logEntry = document.createElement('div');
+    logEntry.style.cssText = 'margin: 2px 0; font-size: 11px;';
+    const time = new Date().toLocaleTimeString();
+    logEntry.innerHTML = `<span style="color:#888">[${time}]</span> ${message}`;
+    logSection.appendChild(logEntry);
+    logSection.scrollTop = logSection.scrollHeight;
+  }
+  
+  // 覆盖原始事件处理器函数，添加日志
+  const originalHandleActions = window.handleActions || function(){};
+  window.handleActions = function(event) {
+    addLog(`handleActions triggered (${event.type})`);
+    return originalHandleActions.apply(this, arguments);
+  };
+  
+  // 显示所有碰撞区域
+  function showCollisionAreas() {
+    const colliders = document.querySelectorAll('a-sphere, [hoverable], [grabbable], [clickable]');
+    colliders.forEach(collider => {
+      // 保存原始材质
+      const originalMaterial = collider.getAttribute('material');
+      collider.dataset.originalMaterial = JSON.stringify(originalMaterial);
+      
+      // 设置为半透明红色以便可见
+      collider.setAttribute('material', 'color: red; opacity: 0.3');
+      collider.setAttribute('visible', true);
+      
+      // 5秒后恢复
+      setTimeout(() => {
+        if (collider.dataset.originalMaterial) {
+          try {
+            const origMat = JSON.parse(collider.dataset.originalMaterial);
+            collider.setAttribute('material', origMat);
+          } catch (e) {
+            collider.removeAttribute('material');
+          }
+        }
+      }, 5000);
+    });
+  }
+  
+  // 重新绑定所有事件
+  function rebindAllEvents() {
+    const fireTrigger = document.querySelector('#firetrigger');
+    if (!fireTrigger) {
+      addLog('Error: fireTrigger element not found');
+      return;
+    }
+    
+    // 移除现有事件
+    fireTrigger.removeEventListener('mousedown', window.handleActions);
+    fireTrigger.removeEventListener('click', window.handleActions);
+    fireTrigger.removeEventListener('grab-start', window.handleActions);
+    
+    // 添加新事件监听器
+    const trackedHandler = function(event) {
+      addLog(`fireTrigger event: ${event.type}`);
+      window.handleActions(event);
+    };
+    
+    fireTrigger.addEventListener('mousedown', trackedHandler);
+    fireTrigger.addEventListener('click', trackedHandler);
+    fireTrigger.addEventListener('grab-start', trackedHandler);
+    
+    // 添加额外的交互属性
+    fireTrigger.setAttribute('hoverable', '');
+    fireTrigger.setAttribute('grabbable', '');
+    fireTrigger.setAttribute('clickable', '');
+    
+    addLog('Rebound fireTrigger events');
+  }
+  
+  // 手动触发fire动作
+  function triggerFireAction() {
+    const event = { 
+      type: 'manual',
+      stopPropagation: function(){} 
+    };
+    
+    if (typeof window.handleActions === 'function') {
+      window.handleActions(event);
+    } else {
+      addLog('Error: handleActions function not found');
+    }
+  }
+  
+  // 为原始监听器添加日志
+  const originalAddEventListener = EventTarget.prototype.addEventListener;
+  EventTarget.prototype.addEventListener = function(type, listener, options) {
+    // 只跟踪与fire触发器相关的事件
+    if (this.id === 'firetrigger' && ['click', 'mousedown', 'grab-start'].includes(type)) {
+      addLog(`Added ${type} event listener to fireTrigger`);
+      
+      // 包装监听器以添加日志
+      const wrappedListener = function(event) {
+        addLog(`fireTrigger ${type} event fired`);
+        return listener.call(this, event);
+      };
+      
+      return originalAddEventListener.call(this, type, wrappedListener, options);
+    }
+    
+    return originalAddEventListener.call(this, type, listener, options);
+  };
+});
+
+// 添加全局调试函数
+window.debugFireTrigger = function() {
+  const fireTrigger = document.querySelector('#firetrigger');
+  if (!fireTrigger) {
+    console.error('FireTrigger element not found');
+    return;
+  }
+  
+  // 输出完整的元素状态
+  console.log('FireTrigger element:', fireTrigger);
+  console.log('Visibility:', fireTrigger.getAttribute('visible'));
+  console.log('Position:', fireTrigger.getAttribute('position'));
+  console.log('Scale:', fireTrigger.getAttribute('scale'));
+  console.log('Event listeners:', fireTrigger._listeners);
+  console.log('Components:', fireTrigger.components);
+  console.log('Interactivity:',
+    fireTrigger.getAttribute('hoverable'),
+    fireTrigger.getAttribute('grabbable'),
+    fireTrigger.getAttribute('clickable')
+  );
+  
+  // 检查位置是否处于视野范围内
+  const camera = document.querySelector('[camera]');
+  if (camera) {
+    const cameraPos = camera.object3D.position;
+    const triggerPos = fireTrigger.object3D.position;
+    console.log('Camera position:', cameraPos);
+    const distance = Math.sqrt(
+      Math.pow(cameraPos.x - triggerPos.x, 2) +
+      Math.pow(cameraPos.y - triggerPos.y, 2) +
+      Math.pow(cameraPos.z - triggerPos.z, 2)
+    );
+    console.log('Distance to camera:', distance);
+  }
+  
+  
+  // 测试启用交互
+  fireTrigger.setAttribute('material', 'color: red; opacity: 0.5');
+  fireTrigger.setAttribute('visible', true);
+  fireTrigger.setAttribute('hoverable', '');
+  fireTrigger.setAttribute('grabbable', '');
+  fireTrigger.setAttribute('clickable', '');
+  
+  console.log('Fire trigger set to visible and interactive');
+};
+</script>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-MVG5M9WGTD"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-MVG5M9WGTD");
+      
+    </script>
+    
+  </body>
+</html>
